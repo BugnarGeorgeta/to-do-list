@@ -52,7 +52,7 @@ public class TaskRepository {
         }
     }
 
-    public List<Task> getTask() throws IOException, SQLException {
+    public List<Task> getTasks() throws IOException, SQLException {
         String sql = "SELECT id,description,deadline,done FROM task";
 
         try (Connection connection = DatabaseConfiguration.getConnection();
