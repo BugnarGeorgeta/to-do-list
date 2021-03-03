@@ -22,7 +22,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        setAccessControlHeaders(resp);
         CreateTaskRequest request = ObjectMapperConfiguration.objectMapper
                 .readValue(req.getReader(), CreateTaskRequest.class);
         try {
@@ -34,7 +34,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        setAccessControlHeaders(resp);
         String id = req.getParameter("id");
 
         try {
@@ -46,7 +46,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        setAccessControlHeaders(resp);
         UpdateTaskRequest request = ObjectMapperConfiguration.objectMapper.
                 readValue(req.getReader(), UpdateTaskRequest.class);
         String id = req.getParameter("id");
@@ -60,6 +60,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeaders(resp);
         try {
             List<Task> tasks = taskService.getTasks();
             String response = ObjectMapperConfiguration.objectMapper.writeValueAsString(tasks);
@@ -70,4 +71,17 @@ public class TaskServlet extends HttpServlet {
 
         }
     }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setAccessControlHeaders(resp);
+    }
+
+    private void setAccessControlHeaders(HttpServletResponse resp) {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, PUT,GET, DELETE");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type");
+    }
+
+
 }
